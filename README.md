@@ -8,6 +8,10 @@ This repository publishes portable AI-agent skills that can be installed with th
 |-------|---------|
 | `second-brain` | Build and maintain a Karpathy-style LLM wiki / personal knowledge base. |
 
+## Tutorials
+
+- [Claude Code example: build `lining'sWiki`](tutorial/second-brain/claude-example.md)
+
 ## Install
 
 ### Claude Code
