@@ -11,12 +11,13 @@ SCRIPT = REPO_ROOT / "skills" / "second-brain" / "scripts" / "second_brain.py"
 
 
 class SecondBrainCliTests(unittest.TestCase):
-    def run_cli(self, *args, expect_code=0):
+    def run_cli(self, *args, expect_code=0, cwd=None):
         result = subprocess.run(
             [sys.executable, str(SCRIPT), *args],
             capture_output=True,
             text=True,
             check=False,
+            cwd=cwd,
         )
         self.assertEqual(
             result.returncode,
@@ -58,6 +59,18 @@ class SecondBrainCliTests(unittest.TestCase):
             self.assertIn("/second-brain-ingest", (root / "AGENTS.md").read_text())
             self.assertIn("/second-brain-ingest", (root / "CLAUDE.md").read_text())
             self.assertIn("# Second Brain Index", (root / "wiki/index.md").read_text())
+
+    def test_init_and_health_default_to_current_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+
+            self.run_cli("init", cwd=root)
+            result = self.run_cli("health", "--json", cwd=root)
+            report = json.loads(result.stdout)
+
+            self.assertTrue((root / "wiki" / "index.md").is_file())
+            self.assertTrue(report["ok"])
+            self.assertEqual(report["summary"]["errors"], 0)
 
     def test_health_reports_missing_required_file(self):
         with tempfile.TemporaryDirectory() as tmp:

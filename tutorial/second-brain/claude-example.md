@@ -38,10 +38,10 @@ claude
 Then ask Claude Code:
 
 ```text
-/second-brain init --root .
+/second-brain init
 ```
 
-`--root .` means "use the current directory as the wiki root." Since you already ran `cd "/Users/lining/Documents/llm-wiki/lining'sWiki"`, the current directory is the target wiki.
+By default, `second-brain` uses the current directory as the wiki root. Since you already ran `cd "/Users/lining/Documents/llm-wiki/lining'sWiki"`, you do not need to pass `--root .`.
 
 Equivalent absolute-path form:
 
@@ -93,7 +93,7 @@ cp "/path/to/source.md" raw/inbox/
 In Claude Code, ask:
 
 ```text
-/second-brain ingest raw/inbox/source.md --root .
+/second-brain ingest raw/inbox/source.md
 ```
 
 During ingest, Claude Code should:
@@ -110,7 +110,7 @@ During ingest, Claude Code should:
 Ask questions against the compiled wiki:
 
 ```text
-/second-brain query "LLM Wiki 和 RAG 的核心区别是什么？" --root .
+/second-brain query "LLM Wiki 和 RAG 的核心区别是什么？"
 ```
 
 If an answer is worth keeping, ask Claude Code to persist it:
@@ -124,13 +124,13 @@ If an answer is worth keeping, ask Claude Code to persist it:
 Run a structural and semantic health check:
 
 ```text
-/second-brain health --root .
+/second-brain health
 ```
 
 To let Claude Code fix safe issues:
 
 ```text
-/second-brain health --root . 并修复安全的断链、孤页和索引问题，不要删除 raw 文件。
+/second-brain health 并修复安全的断链、孤页和索引问题，不要删除 raw 文件。
 ```
 
 The deterministic helper checks required folders/files, broken wikilinks, stale pages, orphan pages, and unreferenced raw sources. Claude Code should then inspect semantic issues such as duplicate concepts, vague provenance, contradictions, and low-confidence claims.
@@ -162,17 +162,17 @@ Obsidian will understand wikilinks such as `[[log]]`, `[[backlog]]`, `[[concepts
 Use this loop:
 
 1. Save new material into `raw/inbox/`.
-2. Run `/second-brain ingest <source> --root .`.
+2. Run `/second-brain ingest <source>`.
 3. Read and edit the compiled wiki in Obsidian.
-4. Ask `/second-brain query ... --root .` when you need synthesized answers.
-5. Run `/second-brain health --root .` regularly.
+4. Ask `/second-brain query ...` when you need synthesized answers.
+5. Run `/second-brain health` regularly.
 
 ## Common Path Patterns
 
-When already inside the wiki folder:
+When already inside the wiki folder, rely on the default current-directory root:
 
 ```text
-/second-brain health --root .
+/second-brain health
 ```
 
 From any other directory:

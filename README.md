@@ -29,10 +29,10 @@ The skill is installed to:
 Use it in Claude Code as:
 
 ```text
-/second-brain init --root .
-/second-brain ingest ./notes/source.md --root .
-/second-brain query "What does my wiki say about LLM Wiki vs RAG?" --root .
-/second-brain health --root .
+/second-brain init
+/second-brain ingest ./notes/source.md
+/second-brain query "What does my wiki say about LLM Wiki vs RAG?"
+/second-brain health
 ```
 
 ### Codex

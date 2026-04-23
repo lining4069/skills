@@ -75,7 +75,7 @@ Use `confidence: low` for provisional claims, unresolved contradictions, or sour
 Run the static helper first:
 
 ```bash
-python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py health --root <wiki-root>
+python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py health
 ```
 
 Then inspect semantic quality:

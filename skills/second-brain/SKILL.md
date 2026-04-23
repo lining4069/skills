@@ -40,7 +40,7 @@ Initialize a wiki skeleton.
 1. Run:
 
 ```bash
-python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py init --root <wiki-root>
+python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py init
 ```
 
 2. Inspect existing `AGENTS.md`, `CLAUDE.md`, `second-brain.yaml`, and `wiki/index.md` before modifying anything further.
@@ -54,7 +54,7 @@ Process raw material into durable wiki pages.
 1. Register local source files when useful:
 
 ```bash
-python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py register-source <source-file> --root <wiki-root>
+python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py register-source <source-file>
 ```
 
 2. Read the source and relevant existing pages from `wiki/index.md`, `wiki/sources/`, `wiki/concepts/`, `wiki/entities/`, `wiki/projects/`, and `wiki/questions/`.
@@ -80,7 +80,7 @@ Run static and semantic maintenance.
 1. Run:
 
 ```bash
-python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py health --root <wiki-root>
+python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py health
 ```
 
 2. Use the script output for deterministic issues: missing required files, broken wikilinks, stale pages, orphan pages, and unreferenced raw sources.
