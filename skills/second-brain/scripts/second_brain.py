@@ -31,12 +31,12 @@ REQUIRED_FILES = [
     "CLAUDE.md",
     "second-brain.yaml",
     "wiki/index.md",
-    "wiki/log.md",
-    "wiki/backlog.md",
+    "logs/events.jsonl",
+    "logs/backlog.md",
     "schema/wiki-page.md",
 ]
 
-CORE_PAGE_STEMS = {"index", "log", "backlog", "readme"}
+CORE_PAGE_STEMS = {"index", "readme"}
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|[^\]]+)?\]\]")
 
 
@@ -113,11 +113,11 @@ Register the source, read the raw material, and update the compiled wiki.
 
 1. Put immutable source material under `raw/inbox/` or register it with `register-source`.
 2. Read the source and existing related wiki pages before writing.
-3. Update `wiki/sources/`, relevant entity/concept/project/question pages, `wiki/index.md`, and `wiki/log.md`.
+3. Update `wiki/sources/`, relevant entity/concept/project/question pages, `wiki/index.md`, and `logs/events.jsonl`.
 4. Preserve provenance with raw paths or source links. Mark uncertainty instead of guessing.
 
 ### /second-brain-query QUESTION
-Answer from the compiled wiki first. Read `wiki/index.md`, then relevant linked pages, then raw sources only when provenance or detail is needed. If the answer produces reusable knowledge, add it to `wiki/questions/` or the relevant concept page and log the update.
+Answer from the compiled wiki first. Read `wiki/index.md`, then relevant linked pages, then raw sources only when provenance or detail is needed. If the answer produces reusable knowledge, add it to `wiki/questions/` or the relevant concept page and log the update in `logs/events.jsonl`.
 
 ### /second-brain-health
 Run the static linter and then use agent judgment for semantic checks:
@@ -130,7 +130,7 @@ python3 {helper} health --root .
 - Keep `raw/` append-only unless the user explicitly asks to clean or archive material.
 - Keep wiki pages short, factual, and source-linked.
 - Prefer `[[relative/wiki-links]]` for durable cross-links.
-- Use `wiki/backlog.md` for unresolved contradictions, missing sources, and follow-up questions.
+- Use `logs/backlog.md` for unresolved contradictions, missing sources, and follow-up questions.
 - Do not overwrite user-written notes without reading them first.
 """
 
@@ -160,8 +160,8 @@ def index_md() -> str:
 Use this page as the table of contents for the compiled wiki.
 
 ## Start Here
-- [[log]] - chronological ingest/query/update trail
-- [[backlog]] - open questions, contradictions, and maintenance tasks
+- Event log: `logs/events.jsonl`
+- Maintenance backlog: `logs/backlog.md`
 
 ## Source Pages
 Add registered source summaries here, for example `sources/source-id`.
@@ -181,20 +181,16 @@ Add reusable answers here, for example `questions/question-slug`.
 ## Maintenance Notes
 - Prefer synthesis over dumping raw excerpts.
 - Keep claims source-linked.
-- Move stale or low-confidence items to [[backlog]].
+- Move stale or low-confidence items to `logs/backlog.md`.
 """
 
 
-def log_md() -> str:
-    return frontmatter("Second Brain Log", "log") + """# Second Brain Log
-
-| Date | Event | Subject | Source | Notes |
-|------|-------|---------|--------|-------|
-"""
+def events_jsonl() -> str:
+    return ""
 
 
 def backlog_md() -> str:
-    return frontmatter("Second Brain Backlog", "backlog", confidence="low") + """# Second Brain Backlog
+    return """# Second Brain Backlog
 
 Track unresolved contradictions, weak claims, missing links, and future ingest/query work.
 
@@ -252,8 +248,8 @@ def init_wiki(root: Path) -> int:
         "second-brain.yaml": config_yaml(),
         "raw/README.md": raw_readme(),
         "wiki/index.md": index_md(),
-        "wiki/log.md": log_md(),
-        "wiki/backlog.md": backlog_md(),
+        "logs/events.jsonl": events_jsonl(),
+        "logs/backlog.md": backlog_md(),
         "schema/wiki-page.md": wiki_page_schema(),
     }
     for relative, content in files.items():
@@ -272,6 +268,13 @@ def append_once(path: Path, marker: str, text: str) -> None:
     if current and not current.endswith("\n"):
         current += "\n"
     path.write_text(current + text, encoding="utf-8")
+
+
+def append_event(root: Path, event: dict[str, str]) -> None:
+    path = root / "logs" / "events.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(event, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def register_source(root: Path, source: Path) -> int:
@@ -313,11 +316,17 @@ def register_source(root: Path, source: Path) -> int:
     index_entry = f"- [[sources/{source_id}]] - {title}\n"
     append_once(root / "wiki" / "index.md", f"[[sources/{source_id}]]", f"\n{index_entry}")
 
-    log_entry = (
-        f"| {today()} | ingest-registered | {title} | `{raw_ref}` | "
-        f"Created [[sources/{source_id}]] for synthesis. |\n"
+    append_event(
+        root,
+        {
+            "date": today(),
+            "event": "ingest-registered",
+            "subject": title,
+            "source": raw_ref,
+            "wiki_page": f"wiki/sources/{source_id}.md",
+            "notes": f"Created wiki/sources/{source_id}.md for synthesis.",
+        },
     )
-    append_once(root / "wiki" / "log.md", raw_ref, log_entry)
 
     print(f"Registered source: {raw_ref}")
     print(f"Created source page: {rel(stub, root)}")

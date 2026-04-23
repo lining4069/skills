@@ -60,8 +60,8 @@ python3 <resolved-second-brain-skill-dir>/scripts/second_brain.py register-sourc
 2. Read the source and relevant existing pages from `wiki/index.md`, `wiki/sources/`, `wiki/concepts/`, `wiki/entities/`, `wiki/projects/`, and `wiki/questions/`.
 3. Update the source page summary, then update durable concept/entity/project/question pages.
 4. Add or refresh `[[wiki-links]]`, source paths, confidence levels, and open questions.
-5. Update `wiki/index.md` and append a row to `wiki/log.md`.
-6. Do not summarize blindly: resolve duplicates, mark contradictions, and put unresolved uncertainty in `wiki/backlog.md`.
+5. Update `wiki/index.md` and append a row to `logs/events.jsonl`.
+6. Do not summarize blindly: resolve duplicates, mark contradictions, and put unresolved uncertainty in `logs/backlog.md`.
 
 ### /second-brain-query QUESTION
 
@@ -71,7 +71,7 @@ Answer against the compiled wiki first.
 2. Read raw sources only when the wiki lacks detail or a claim needs provenance.
 3. Answer with concise source-aware reasoning. Distinguish compiled wiki knowledge from raw-source evidence.
 4. If the answer is reusable, ask briefly or proceed if clearly requested to capture it in `wiki/questions/` or the relevant concept page.
-5. Log durable query captures in `wiki/log.md`.
+5. Log durable query captures in `logs/events.jsonl`.
 
 ### /second-brain-health or /second-brain-linter
 

@@ -50,8 +50,8 @@ class SecondBrainCliTests(unittest.TestCase):
                 "CLAUDE.md",
                 "second-brain.yaml",
                 "wiki/index.md",
-                "wiki/log.md",
-                "wiki/backlog.md",
+                "logs/events.jsonl",
+                "logs/backlog.md",
                 "schema/wiki-page.md",
             ]:
                 self.assertTrue((root / relative).is_file(), relative)
@@ -72,11 +72,28 @@ class SecondBrainCliTests(unittest.TestCase):
             self.assertTrue(report["ok"])
             self.assertEqual(report["summary"]["errors"], 0)
 
+
+    def test_register_source_appends_to_logs_events_jsonl(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "My Note.md"
+            source.write_text("# My Note\n\nA useful observation.\n")
+
+            self.run_cli("register-source", str(source), "--root", str(root))
+
+            events = (root / "logs" / "events.jsonl").read_text().strip().splitlines()
+            self.assertEqual(len(events), 1)
+            event = json.loads(events[0])
+            self.assertEqual(event["event"], "ingest-registered")
+            self.assertEqual(event["subject"], "My Note")
+            self.assertTrue(event["source"].startswith("raw/inbox/"))
+            self.assertFalse((root / "wiki" / "log.md").exists())
+
     def test_health_reports_missing_required_file(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.run_cli("init", "--root", str(root))
-            (root / "wiki" / "index.md").unlink()
+            (root / "logs" / "backlog.md").unlink()
 
             result = self.run_cli("health", "--root", str(root), "--json", expect_code=1)
             report = json.loads(result.stdout)
@@ -85,7 +102,7 @@ class SecondBrainCliTests(unittest.TestCase):
                 any(
                     issue["severity"] == "error"
                     and issue["code"] == "missing-required-file"
-                    and issue["path"] == "wiki/index.md"
+                    and issue["path"] == "logs/backlog.md"
                     for issue in report["issues"]
                 )
             )

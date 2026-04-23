@@ -8,8 +8,6 @@ raw/
   archive/
 wiki/
   index.md
-  log.md
-  backlog.md
   sources/
   concepts/
   entities/
@@ -18,6 +16,8 @@ wiki/
 schema/
   wiki-page.md
 logs/
+  events.jsonl
+  backlog.md
 second-brain.yaml
 AGENTS.md
 CLAUDE.md
@@ -33,15 +33,13 @@ CLAUDE.md
 | `project` | `wiki/projects/<slug>.md` | Active work streams, decisions, status, next actions |
 | `question` | `wiki/questions/<slug>.md` | Reusable answers and reasoning trails |
 | `index` | `wiki/index.md` | Navigation and entry points |
-| `log` | `wiki/log.md` | Chronological audit trail |
-| `backlog` | `wiki/backlog.md` | Contradictions, weak claims, missing links, future work |
 
 ## Frontmatter
 
 ```yaml
 ---
 title: Human-readable title
-type: source | concept | entity | project | question | index | log | backlog
+type: source | concept | entity | project | question | index
 updated: YYYY-MM-DD
 confidence: low | medium | high
 sources:
@@ -54,13 +52,13 @@ Use `confidence: low` for provisional claims, unresolved contradictions, or sour
 ## Ingest Checklist
 
 1. Register or place the source under `raw/inbox/`.
-2. Read `wiki/index.md`, `wiki/log.md`, and any likely related pages before editing.
+2. Read `wiki/index.md`, `logs/events.jsonl`, and any likely related pages before editing.
 3. Create or update the source page in `wiki/sources/`.
 4. Extract durable claims, entities, concepts, decisions, and questions.
 5. Merge with existing pages instead of creating duplicates.
 6. Add backlinks and update index sections.
-7. Move unresolved issues to `wiki/backlog.md`.
-8. Append a row to `wiki/log.md`.
+7. Move unresolved issues to `logs/backlog.md`.
+8. Append a row to `logs/events.jsonl`.
 
 ## Query Checklist
 
@@ -97,10 +95,10 @@ Then inspect semantic quality:
 
 ## Logging Format
 
-Append to `wiki/log.md`:
+Append one JSON object per line to `logs/events.jsonl`:
 
-```markdown
-| YYYY-MM-DD | ingest | Short subject | `raw/inbox/source.md` | Updated [[concepts/example]] and [[sources/source-id]]. |
+```json
+{"date":"YYYY-MM-DD","event":"ingest","subject":"Short subject","source":"raw/inbox/source.md","wiki_page":"wiki/sources/source-id.md","notes":"Updated concepts/example and sources/source-id."}
 ```
 
-Use event values such as `init`, `ingest-registered`, `ingest`, `query-captured`, `health-fix`, and `archive`.
+Use event values such as `init`, `ingest-registered`, `ingest`, `query-captured`, `health-fix`, and `archive`. Keep unresolved maintenance work in `logs/backlog.md`.

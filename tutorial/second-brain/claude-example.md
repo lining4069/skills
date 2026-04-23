@@ -61,8 +61,6 @@ lining'sWiki/
     archive/
   wiki/
     index.md
-    log.md
-    backlog.md
     sources/
     concepts/
     entities/
@@ -70,6 +68,8 @@ lining'sWiki/
     questions/
   schema/
   logs/
+    events.jsonl
+    backlog.md
 ```
 
 ## 4. Add Raw Sources
@@ -102,8 +102,8 @@ During ingest, Claude Code should:
 - Update or create a source page under `wiki/sources/`.
 - Update durable concept/entity/project/question pages.
 - Add wikilinks and source references.
-- Update `wiki/index.md` and `wiki/log.md`.
-- Put unresolved contradictions or weak claims in `wiki/backlog.md`.
+- Update `wiki/index.md` and `logs/events.jsonl`.
+- Put unresolved contradictions or weak claims in `logs/backlog.md`.
 
 ## 6. Query the Wiki
 

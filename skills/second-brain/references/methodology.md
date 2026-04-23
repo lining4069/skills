@@ -13,7 +13,7 @@ The core shift is from "retrieve the best chunks at query time" to "incrementall
 | Raw sources | Immutable source material and provenance | `raw/` |
 | Compiled wiki | Summaries, entities, concepts, questions, links | `wiki/` |
 | Schema/rules | Agent instructions and page conventions | `AGENTS.md`, `CLAUDE.md`, `schema/` |
-| Logs | Audit trail for ingest, query captures, and maintenance | `wiki/log.md`, `logs/` |
+| Logs | Audit trail and maintenance backlog | `logs/events.jsonl`, `logs/backlog.md` |
 
 ## Core Operations
 
