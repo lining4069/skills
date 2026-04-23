@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain"
+  short_description: "Build and maintain an LLM-readable wiki"
+  default_prompt: "Use $second-brain to initialize, ingest, query, or lint a personal LLM wiki."
