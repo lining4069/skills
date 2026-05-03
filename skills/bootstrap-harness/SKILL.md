@@ -26,12 +26,26 @@ If either bootstrap document is missing, stop and route back to `prd-to-bootstra
 
 Resolve the source in this order:
 
-1. `instantiator source path` from `HARNESS_BOOTSTRAP.md`
+1. `instantiator source path` from `HARNESS_BOOTSTRAP.md`, but only if the path is explicitly present and actually readable
 2. the bundled snapshot at `assets/harness-instantiator/` inside the installed skill directory
 3. a sibling directory named `harness-instantiator/`
 4. a parent-sibling directory named `../harness-instantiator/`
 
 If none of these exist, stop and report the missing source path instead of guessing.
+
+## Default bundled-source rule
+
+The bundled snapshot is the default source for public installs of this skill.
+
+If `HARNESS_BOOTSTRAP.md` does not provide a readable `instantiator source path`, do not fail early and do not require the user to create a separate `harness-instantiator/` directory.
+
+Instead:
+
+- resolve the bundled snapshot relative to this installed skill directory first
+- treat the bundled snapshot as the normal path for portable installs
+- only search the workspace for `harness-instantiator/` after the bundled snapshot is unavailable
+
+In other words, a fresh install of `bootstrap-harness` should still be able to instantiate a harness even when no external `harness-instantiator/` directory exists in the project.
 
 ## Files to instantiate
 
@@ -73,6 +87,12 @@ Only generate these when `HARNESS_BOOTSTRAP.md` explicitly asks for them:
 - `.cursor/rules/project-bootstrap.mdc`
 
 Use templates from the resolved `harness-instantiator/templates/` directory when available. If a project-local source is absent, use the bundled snapshot.
+
+If the bundled snapshot is used, generate the Cursor compatibility file as:
+
+- `.cursor/rules/project-bootstrap.mdc`
+
+Do not require an external `harness-instantiator` checkout just to generate compatibility files.
 
 ## Authorization and approval requirements
 

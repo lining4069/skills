@@ -9,6 +9,16 @@ Use this structure when no project-local template is available:
 
 ## 1. 路径与对象
 
+建议在这一节明确写出：
+
+- `target repo path`
+- `product spec path`
+- `instantiator source path`
+
+如果当前 workflow 使用的是公开安装的 `bootstrap-harness` skill 自带 snapshot，可以直接写：
+
+- `instantiator source path: bundled skill asset`
+
 ## 2. 项目类型
 
 ## 3. 主技术栈

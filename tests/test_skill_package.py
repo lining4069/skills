@@ -102,6 +102,11 @@ class SkillPackageTests(unittest.TestCase):
         self.assertTrue((base / "harness-base" / ".agent" / "PLANS.md").is_file())
         self.assertTrue((base / "templates" / "CLAUDE.template.md").is_file())
         self.assertTrue((base / "project-bootstrap-checklist.md").is_file())
+        text = (SKILLS_DIR / "bootstrap-harness" / "SKILL.md").read_text()
+        self.assertIn("default source for public installs", text)
+        self.assertIn("do not fail early", text)
+        self.assertIn("resolve the bundled snapshot relative to this installed skill directory first", text)
+        self.assertIn(".cursor/rules/project-bootstrap.mdc", text)
 
     def test_tutorials_do_not_contain_personal_machine_paths(self):
         tutorial_dir = REPO_ROOT / "tutorial"
