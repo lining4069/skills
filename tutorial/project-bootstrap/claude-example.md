@@ -63,6 +63,14 @@ With an approved `PRD.md`, Claude Code should create:
 - `PRODUCT_SPEC.md`
 - `HARNESS_BOOTSTRAP.md`
 
+In a normal public install, the generated bootstrap document should usually prefer semantic path values such as:
+
+- `target repo path: current repo root`
+- `product spec path: PRODUCT_SPEC.md`
+- `instantiator source path: bundled skill asset`
+
+rather than machine-specific absolute paths.
+
 ## 6. Instantiate the Harness
 
 Run the same workflow again:

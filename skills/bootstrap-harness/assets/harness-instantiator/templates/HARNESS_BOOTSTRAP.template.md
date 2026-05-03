@@ -15,9 +15,13 @@
 
 ## 1. 路径与对象
 
-- target repo path：
-- product spec path：
-- instantiator source path：
+推荐优先写相对语义：
+
+- target repo path：`current repo root`
+- product spec path：`PRODUCT_SPEC.md`
+- instantiator source path：`bundled skill asset`
+
+只有在确实需要外部 instantiator 源目录时，才写机器相关路径。
 
 ## 2. 项目类型
 

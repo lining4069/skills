@@ -15,6 +15,14 @@ Use this structure when no project-local template is available:
 - `product spec path`
 - `instantiator source path`
 
+默认优先写相对语义，而不是当前机器上的绝对路径。
+
+推荐写法：
+
+- `target repo path: current repo root`
+- `product spec path: PRODUCT_SPEC.md`
+- `instantiator source path: bundled skill asset`
+
 如果当前 workflow 使用的是公开安装的 `bootstrap-harness` skill 自带 snapshot，可以直接写：
 
 - `instantiator source path: bundled skill asset`

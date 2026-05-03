@@ -31,6 +31,12 @@
    - non-goals
    - bootstrap constraints
 
+推荐优先使用语义化写法，而不是绝对路径：
+
+- `target repo path: current repo root`
+- `product spec path: PRODUCT_SPEC.md`
+- `instantiator source path: bundled skill asset`
+
 ## 三、实例化边界
 
 1. Codex 是否被明确告知只能写目标仓库

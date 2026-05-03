@@ -108,6 +108,30 @@ class SkillPackageTests(unittest.TestCase):
         self.assertIn("resolve the bundled snapshot relative to this installed skill directory first", text)
         self.assertIn(".cursor/rules/project-bootstrap.mdc", text)
 
+    def test_bootstrap_templates_prefer_semantic_paths(self):
+        harness_template = (
+            SKILLS_DIR
+            / "bootstrap-harness"
+            / "assets"
+            / "harness-instantiator"
+            / "templates"
+            / "HARNESS_BOOTSTRAP.template.md"
+        ).read_text()
+        prd_bootstrap_template = (
+            SKILLS_DIR / "prd-to-bootstrap" / "references" / "HARNESS_BOOTSTRAP_TEMPLATE.md"
+        ).read_text()
+        required_fields = (
+            SKILLS_DIR / "prd-to-bootstrap" / "references" / "REQUIRED_FIELDS.md"
+        ).read_text()
+        self.assertIn("target repo path：`current repo root`", harness_template)
+        self.assertIn("product spec path：`PRODUCT_SPEC.md`", harness_template)
+        self.assertIn("instantiator source path：`bundled skill asset`", harness_template)
+        self.assertIn("target repo path: current repo root", prd_bootstrap_template)
+        self.assertIn("product spec path: PRODUCT_SPEC.md", prd_bootstrap_template)
+        self.assertIn("instantiator source path: bundled skill asset", prd_bootstrap_template)
+        self.assertIn("target repo path: current repo root", required_fields)
+        self.assertIn("instantiator source path: bundled skill asset", required_fields)
+
     def test_tutorials_do_not_contain_personal_machine_paths(self):
         tutorial_dir = REPO_ROOT / "tutorial"
         for path in tutorial_dir.rglob("*.md"):
