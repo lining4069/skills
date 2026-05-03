@@ -1,6 +1,6 @@
-# Claude Code Example: Build `lining'sWiki`
+# Claude Code Example: Build a Personal LLM Wiki
 
-This walkthrough installs the `second-brain` skill for Claude Code, creates a personal LLM Wiki named `lining'sWiki`, and opens it with Obsidian.
+This walkthrough installs the `second-brain` skill for Claude Code, creates a personal LLM Wiki, and opens it with Obsidian.
 
 ## 1. Install the Skill
 
@@ -14,17 +14,17 @@ Restart Claude Code or open a new Claude Code session after installation.
 
 ## 2. Create the Wiki Folder
 
-This example creates the wiki at:
+This example creates the wiki at a path like:
 
 ```text
-/Users/lining/Documents/llm-wiki/lining'sWiki
+<your-workspace>/my-llm-wiki
 ```
 
-Because the folder name contains an apostrophe, wrap the path in double quotes:
+For example:
 
 ```bash
-mkdir -p "/Users/lining/Documents/llm-wiki/lining'sWiki"
-cd "/Users/lining/Documents/llm-wiki/lining'sWiki"
+mkdir -p ~/Documents/llm-wiki/my-llm-wiki
+cd ~/Documents/llm-wiki/my-llm-wiki
 ```
 
 ## 3. Start Claude Code in the Wiki Folder
@@ -41,18 +41,18 @@ Then ask Claude Code:
 /second-brain init
 ```
 
-By default, `second-brain` uses the current directory as the wiki root. Since you already ran `cd "/Users/lining/Documents/llm-wiki/lining'sWiki"`, you do not need to pass `--root .`.
+By default, `second-brain` uses the current directory as the wiki root. Since you already ran `cd ~/Documents/llm-wiki/my-llm-wiki`, you do not need to pass `--root .`.
 
-Equivalent absolute-path form:
+Equivalent explicit-path form:
 
 ```text
-/second-brain init --root "/Users/lining/Documents/llm-wiki/lining'sWiki"
+/second-brain init --root ~/Documents/llm-wiki/my-llm-wiki
 ```
 
 Expected structure:
 
 ```text
-lining'sWiki/
+my-llm-wiki/
   AGENTS.md
   CLAUDE.md
   second-brain.yaml
@@ -79,7 +79,7 @@ Put raw notes, article exports, meeting notes, or markdown files under `raw/inbo
 Example from a shell:
 
 ```bash
-cp "/path/to/source.md" "/Users/lining/Documents/llm-wiki/lining'sWiki/raw/inbox/"
+cp /path/to/source.md ~/Documents/llm-wiki/my-llm-wiki/raw/inbox/
 ```
 
 Example from inside the wiki folder:
@@ -146,7 +146,7 @@ Open folder as vault
 Select:
 
 ```text
-/Users/lining/Documents/llm-wiki/lining'sWiki
+<your-workspace>/my-llm-wiki
 ```
 
 Start from:
@@ -178,7 +178,7 @@ When already inside the wiki folder, rely on the default current-directory root:
 From any other directory:
 
 ```text
-/second-brain health --root "/Users/lining/Documents/llm-wiki/lining'sWiki"
+/second-brain health --root ~/Documents/llm-wiki/my-llm-wiki
 ```
 
-Both forms target the same wiki. The `.` form is shorter; the absolute-path form is clearer when you are not currently inside the wiki folder.
+Both forms target the same wiki. The `.` form is shorter; the explicit-path form is clearer when you are not currently inside the wiki folder.
